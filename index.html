@@ -1,0 +1,1151 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Codex App 스킬 실습 매뉴얼</title>
+<meta name="description" content="Skill을 사용하고, 설치하고, 만들고, 연결하는 법 — 실습 매뉴얼">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --accent:#4f46e5;
+  --accent-soft:#eef0ff;
+  --ink:#1f2330;
+  --ink-soft:#4a4f60;
+  --muted:#8b90a0;
+  --line:#e6e7ee;
+  --bg:#ffffff;
+  --bg-tint:#f6f7fb;
+  --radius:14px;
+  --maxw:760px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color:var(--ink);
+  background:var(--bg-tint);
+  line-height:1.75;
+  font-size:17px;
+  -webkit-text-size-adjust:100%;
+}
+a{color:var(--accent);}
+
+/* layout */
+.layout{display:flex;max-width:1180px;margin:0 auto;align-items:flex-start;}
+.sidebar{
+  width:260px;flex:0 0 260px;position:sticky;top:0;height:100vh;
+  overflow-y:auto;padding:28px 18px 40px;border-right:1px solid var(--line);
+  background:var(--bg);
+}
+.sidebar .brand{display:block;font-weight:800;font-size:15px;letter-spacing:-.01em;margin-bottom:4px;text-decoration:none;color:var(--ink);cursor:pointer;}
+.sidebar .brand:hover{color:var(--accent);}
+.sidebar .brand small{display:block;font-weight:500;color:var(--muted);font-size:12px;margin-top:3px;}
+.toc{list-style:none;margin:22px 0 0;padding:0;}
+.toc li{margin:2px 0;}
+.toc a{
+  display:block;text-decoration:none;color:var(--ink-soft);
+  font-size:14px;padding:7px 10px;border-radius:9px;line-height:1.45;
+}
+.toc a:hover{background:var(--bg-tint);}
+.toc a.active{background:var(--accent-soft);color:var(--accent);font-weight:700;}
+.toc a .n{display:inline-block;width:1.4em;color:var(--muted);font-weight:700;}
+.toc a.active .n{color:var(--accent);}
+
+.content{flex:1;min-width:0;background:var(--bg);}
+.inner{max-width:var(--maxw);margin:0 auto;padding:0 26px 120px;}
+
+/* hero */
+.hero{
+  background:linear-gradient(150deg,#4f46e5 0%,#6d5cf0 55%,#8b7bf5 100%);
+  color:#fff;padding:64px 26px 56px;
+}
+.hero-in{max-width:var(--maxw);margin:0 auto;}
+.kicker{
+  display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.06em;
+  background:rgba(255,255,255,.18);padding:6px 12px;border-radius:999px;margin-bottom:18px;
+}
+.hero h1{font-size:34px;line-height:1.3;margin:0 0 14px;letter-spacing:-.02em;font-weight:800;}
+.hero .sub{font-size:16px;opacity:.95;margin:0 0 6px;}
+.hero .tag{font-size:15px;font-style:italic;opacity:.85;margin:0 0 22px;}
+.hero .meta{font-size:13.5px;opacity:.8;border-top:1px solid rgba(255,255,255,.25);padding-top:16px;}
+
+/* mobile nav */
+.mobilebar,.mobile-toc{display:none;}
+
+/* chapters */
+.chapter{padding-top:30px;margin-top:30px;}
+.chapter:first-of-type{margin-top:14px;}
+.ch-head{
+  background:var(--accent);color:#fff;border-radius:var(--radius);
+  padding:22px 24px;margin:34px 0 26px;
+}
+.ch-head .ch-no{font-size:13px;font-weight:700;letter-spacing:.05em;opacity:.85;}
+.ch-head h2{margin:4px 0 6px;font-size:23px;font-weight:800;letter-spacing:-.01em;}
+.ch-head p{margin:0;font-size:14.5px;opacity:.9;}
+
+h3{font-size:19px;font-weight:800;margin:36px 0 12px;letter-spacing:-.01em;
+   padding-left:13px;border-left:4px solid var(--accent);}
+h4{font-size:16.5px;font-weight:800;margin:30px 0 10px;color:var(--accent);}
+p{margin:14px 0;}
+strong{font-weight:700;}
+
+ul,ol{margin:14px 0;padding-left:24px;}
+li{margin:6px 0;}
+
+/* generic callout box */
+.box{
+  border-radius:var(--radius);padding:18px 20px;margin:20px 0;
+  border:1px solid var(--line);background:var(--bg);
+}
+.box .box-label{
+  font-size:12.5px;font-weight:800;letter-spacing:.03em;
+  display:flex;align-items:center;gap:7px;margin-bottom:8px;
+}
+.box .box-label .ic{font-size:15px;}
+.box p:first-of-type,.box ul:first-of-type{margin-top:0;}
+.box p:last-child,.box ul:last-child{margin-bottom:0;}
+
+/* learn box */
+.box.learn{background:var(--accent-soft);border-color:#dcdcfb;}
+.box.learn .box-label{color:var(--accent);}
+.box.learn ul{margin:6px 0 0;}
+
+/* key sentence */
+.box.key{background:#fff7ed;border-color:#fcd9b0;border-left:5px solid #f59e0b;}
+.box.key .box-label{color:#b45309;}
+.box.key p{font-weight:600;color:#7c4a05;}
+
+/* caution */
+.box.caution{background:#fef2f2;border-color:#f7c9c9;border-left:5px solid #ef4444;}
+.box.caution .box-label{color:#b91c1c;}
+
+/* observe */
+.box.observe{background:#ecfdf5;border-color:#bbe9d2;border-left:5px solid #10b981;}
+.box.observe .box-label{color:#047857;}
+
+/* tip */
+.box.tip{background:#eff6ff;border-color:#c7ddf7;border-left:5px solid #3b82f6;}
+.box.tip .box-label{color:#1d4ed8;}
+
+/* check */
+.box.check{background:#f0fdfa;border-color:#b8e6e0;border-left:5px solid #14b8a6;}
+.box.check .box-label{color:#0f766e;}
+
+/* info / explanatory */
+.box.info{background:var(--bg-tint);border-color:var(--line);}
+.box.info .box-label{color:var(--ink-soft);}
+
+/* next chapter */
+.box.next{background:#faf5ff;border-color:#e4d3f7;border-left:5px solid #a855f7;}
+.box.next .box-label{color:#7e22ce;}
+
+/* sample outputs */
+.box.sample{background:#fdf4ef;border-color:#f0d9cb;border-left:5px solid #d85a30;}
+.box.sample .box-label{color:#993c1d;}
+.sample-links{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.sample-link{display:flex;align-items:center;gap:11px;text-decoration:none;
+  background:var(--bg);border:1px solid var(--line);border-radius:10px;
+  padding:11px 14px;color:var(--ink);font-size:14.5px;font-weight:700;}
+.sample-link:hover{border-color:#d85a30;background:#fff;}
+.sample-link .pdf-ic{flex:0 0 auto;font-size:11px;font-weight:800;color:#fff;
+  background:#d85a30;border-radius:5px;padding:3px 6px;letter-spacing:.03em;}
+.sample-link .sl-sub{font-weight:400;color:var(--muted);font-size:13px;}
+.sample-link .sl-go{margin-left:auto;color:#d85a30;font-weight:800;}
+
+/* try / prompt box */
+.try{
+  background:#1e2233;border-radius:var(--radius);margin:20px 0;overflow:hidden;
+  border:1px solid #2c3147;
+}
+.try-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:11px 16px;background:#272c41;border-bottom:1px solid #343a52;
+}
+.try-head .t-label{
+  font-size:12.5px;font-weight:800;color:#c7c9ff;letter-spacing:.03em;
+  display:flex;align-items:center;gap:7px;
+}
+.copy-btn{
+  font:inherit;font-size:12px;font-weight:700;cursor:pointer;flex:0 0 auto;
+  background:#4f46e5;color:#fff;border:0;border-radius:7px;padding:5px 11px;
+}
+.copy-btn:hover{background:#635bf0;}
+.copy-btn.done{background:#10b981;}
+.try-body{padding:16px 18px;}
+.try-body .prompt{
+  margin:0;color:#e8e9f5;font-size:15px;line-height:1.7;
+  white-space:pre-wrap;word-break:break-word;
+}
+.try-body .prompt + .prompt{margin-top:12px;padding-top:12px;border-top:1px dashed #3a4059;}
+
+/* code / folder tree */
+.code{
+  background:#1e2233;color:#e8e9f5;border-radius:var(--radius);
+  padding:16px 18px;margin:18px 0;font-size:14px;line-height:1.8;
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  white-space:pre;overflow-x:auto;
+}
+
+/* flow */
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:20px 0;}
+.flow .step{
+  flex:1 1 130px;background:var(--accent-soft);border:1px solid #dcdcfb;
+  border-radius:11px;padding:12px 13px;font-size:14px;font-weight:700;
+  color:var(--accent);display:flex;align-items:center;line-height:1.45;
+}
+.flow .arrow{display:flex;align-items:center;color:var(--muted);font-size:18px;font-weight:800;}
+
+/* tables */
+.tablewrap{overflow-x:auto;margin:18px 0;border-radius:var(--radius);border:1px solid var(--line);}
+table{border-collapse:collapse;width:100%;font-size:14.5px;background:var(--bg);}
+th,td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:13.5px;white-space:nowrap;}
+tr:last-child td{border-bottom:0;}
+td:first-child{font-weight:700;}
+
+/* closing */
+.box.closing{
+  background:linear-gradient(150deg,#4f46e5,#6d5cf0);color:#fff;border:0;
+  padding:26px 24px;margin:40px 0 0;
+}
+.box.closing .box-label{color:#dcdcff;}
+.box.closing p{color:#fff;}
+
+/* back to top */
+#top{
+  position:fixed;right:20px;bottom:20px;width:46px;height:46px;border-radius:50%;
+  background:var(--accent);color:#fff;border:0;font-size:20px;cursor:pointer;
+  box-shadow:0 6px 20px rgba(79,70,229,.4);opacity:0;pointer-events:none;
+  transition:opacity .2s;z-index:50;
+}
+#top.show{opacity:1;pointer-events:auto;}
+
+.footer{
+  max-width:var(--maxw);margin:0 auto;padding:30px 26px 60px;
+  color:var(--muted);font-size:13px;border-top:1px solid var(--line);
+}
+
+@media (max-width:900px){
+  .layout{display:block;}
+  .sidebar{display:none;}
+  .mobilebar{
+    display:flex;align-items:center;justify-content:space-between;
+    position:sticky;top:0;z-index:40;background:var(--bg);
+    padding:12px 18px;border-bottom:1px solid var(--line);
+  }
+  .mobilebar .mb-title{font-weight:800;font-size:14px;}
+  .menu-btn{font:inherit;font-weight:700;font-size:13px;background:var(--accent-soft);
+    color:var(--accent);border:0;border-radius:8px;padding:8px 13px;cursor:pointer;}
+  .mobile-toc{
+    display:none;background:var(--bg);border-bottom:1px solid var(--line);
+    padding:8px 12px 14px;position:sticky;top:49px;z-index:39;
+    max-height:70vh;overflow-y:auto;
+  }
+  .mobile-toc.open{display:block;}
+  .mobile-toc ul{list-style:none;margin:0;padding:0;}
+  .mobile-toc a{display:block;text-decoration:none;color:var(--ink-soft);
+    font-size:14.5px;padding:9px 10px;border-radius:8px;}
+  .mobile-toc a:hover{background:var(--bg-tint);}
+  .mobile-toc a .n{color:var(--muted);font-weight:700;margin-right:6px;}
+  .hero{padding:46px 22px 40px;}
+  .hero h1{font-size:26px;}
+  .inner{padding:0 18px 100px;}
+  body{font-size:16px;}
+}
+</style>
+</head>
+<body>
+
+<div class="mobilebar">
+  <span class="mb-title">Codex App 스킬 매뉴얼</span>
+  <button class="menu-btn" id="menuBtn" aria-label="목차 열기">목차 ▾</button>
+</div>
+<nav class="mobile-toc" id="mobileToc" aria-label="목차"></nav>
+
+<div class="layout">
+
+  <aside class="sidebar" aria-label="목차">
+    <a class="brand" href="#" id="brandLink">Codex App 스킬 매뉴얼
+      <small>실습 자료 · 2026.05.21</small>
+    </a>
+    <ul class="toc" id="toc"></ul>
+  </aside>
+
+  <main class="content">
+
+    <header class="hero">
+      <div class="hero-in">
+        <span class="kicker">실습 매뉴얼</span>
+        <h1>Codex App 스킬 실습 매뉴얼</h1>
+        <p class="sub">— Skill을 사용하고, 설치하고, 만들고, 연결하는 법 —</p>
+        <p class="tag">프롬프트를 반복하지 말고, 일하는 방식을 저장하는 연습</p>
+        <p class="meta">2026년 5월 21일 · 케빈</p>
+      </div>
+    </header>
+
+    <div class="inner">
+
+      <!-- 학습 구성 -->
+      <div class="box learn" style="margin-top:30px;">
+        <div class="box-label"><span class="ic">&#128218;</span> 학습 구성</div>
+        <ul>
+          <li><strong>1장. Skill 이해하기</strong> — Skill은 무엇이고 왜 필요한가</li>
+          <li><strong>2장. 기본 Skill 사용하기</strong> — 이미 들어있는 Skill을 불러 쓰는 법</li>
+          <li><strong>3장. Skill 설치하기</strong> — 다른 사람이 만든 Skill을 가져오는 법</li>
+          <li><strong>4장. Skill 만들기</strong> — 내 동작을 Skill로 바꾸는 법</li>
+          <li><strong>5장. Skill 연결하기</strong> — 여러 Skill을 하나의 작업 흐름으로 쓰는 법</li>
+          <li><strong>6장. 심화 실습</strong> — 데이터 수집부터 자동화까지 직접 해보기</li>
+          <li><strong>7장. Skill을 독립 앱으로</strong> — Codex App 밖에서도 도는 앱 만들기</li>
+        </ul>
+      </div>
+
+      <!-- ============ 1장 ============ -->
+      <section class="chapter" id="ch1">
+        <div class="ch-head">
+          <div class="ch-no">CHAPTER 1</div>
+          <h2>1장. Skill 이해하기</h2>
+          <p>Codex에게 매번 다시 설명하던 일을 저장해 두는 방법</p>
+        </div>
+
+        <div class="box learn">
+          <div class="box-label"><span class="ic">&#127919;</span> 이 장에서 배울 것</div>
+          <ul>
+            <li>Skill의 정확한 의미</li>
+            <li>프롬프트, 플러그인, 서브에이전트와의 차이</li>
+            <li>Codex가 Skill을 읽고 사용하는 방식</li>
+            <li>Skill이 결국 한 개의 'md 문서'라는 사실</li>
+          </ul>
+        </div>
+
+        <h3>1.1 Skill의 한 문장 정의</h3>
+        <p><strong>정의.</strong> Skill은 Codex가 특정 업무를 할 때 참고하는 재사용 가능한 작업 지침 폴더다. Skill 안에는 반드시 SKILL.md 파일이 있고, 필요하면 스크립트·참고문서·템플릿 같은 리소스가 함께 들어간다.</p>
+
+        <div class="box key">
+          <div class="box-label"><span class="ic">&#9733;</span> 핵심 문장</div>
+          <p>Skill은 '이번 한 번의 지시'가 아니라 '앞으로도 반복해서 쓸 업무 방식'이다.</p>
+        </div>
+
+        <p>예를 들어 다음과 같은 일은 Skill로 만들기 좋다.</p>
+        <ul>
+          <li>매주 같은 형식으로 데이터를 요약한다.</li>
+          <li>항상 같은 회사 양식으로 보고서를 작성한다.</li>
+          <li>PDF, 엑셀, 음성 파일을 정해진 방식으로 처리한다.</li>
+          <li>프로젝트를 시작할 때 요구사항을 늘 같은 기준으로 정리한다.</li>
+        </ul>
+
+        <h3>1.2 Skill과 다른 도구의 차이</h3>
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>구분</th><th>무엇인가</th><th>언제 쓰는가</th><th>기억할 점</th></tr></thead>
+          <tbody>
+            <tr><td>프롬프트</td><td>현재 대화에서 쓰는 지시문</td><td>한 번만 하면 되는 작업</td><td>대화가 끝나면 다시 설명해야 한다</td></tr>
+            <tr><td>Skill</td><td>재사용 가능한 업무 지침과 리소스</td><td>반복되는 업무, 표준 절차가 있는 작업</td><td>다음에도 같은 방식으로 시작할 수 있다</td></tr>
+            <tr><td>플러그인 / 커넥터</td><td>외부 서비스와 연결하는 기능</td><td>메일, 캘린더, GitHub 같은 서비스 작업</td><td>서비스 연결이지 업무 절차 자체는 아니다</td></tr>
+            <tr><td>서브에이전트</td><td>작업을 나눠 병렬로 처리하는 실행 단위</td><td>조사, 구현, 검증을 분리할 때</td><td>Skill은 기준을 주고, 서브에이전트는 일을 나눈다</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h3>1.3 Codex가 Skill을 읽는 순서</h3>
+        <ol>
+          <li>Codex는 사용 가능한 Skill의 이름과 description(설명)을 먼저 본다.</li>
+          <li>사용자의 요청이 어떤 Skill과 맞으면 그 Skill이 발동된다.</li>
+          <li>Skill이 발동된 뒤에야 SKILL.md 본문을 읽는다.</li>
+          <li>본문에 적힌 참고문서·스크립트·템플릿이 필요하면 그때 해당 리소스를 사용한다.</li>
+        </ol>
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>구성 요소</th><th>언제 보이는가</th><th>역할</th></tr></thead>
+          <tbody>
+            <tr><td>name / description</td><td>항상 얇게 보임</td><td>이 Skill을 쓸지 말지 판단한다</td></tr>
+            <tr><td>SKILL.md 본문</td><td>Skill 발동 후</td><td>실제 작업 순서와 기준을 알려준다</td></tr>
+            <tr><td>references</td><td>필요할 때</td><td>긴 정책, 예시, 스키마, 설명 자료를 담는다</td></tr>
+            <tr><td>scripts</td><td>필요할 때</td><td>정확히 반복해야 하는 작업을 실행한다</td></tr>
+            <tr><td>assets</td><td>필요할 때</td><td>템플릿, 이미지, 샘플 파일 같은 재료를 담는다</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h3>1.4 실습 — Skill의 정체를 직접 확인하기</h3>
+        <p>Skill은 마법이 아니라 '글로 적힌 지침서'다. 이 사실을 눈으로 직접 확인해 본다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">현재 사용할 수 있는 Skill 중 하나를 골라, 그 Skill의 SKILL.md 파일이 어디에 있는지 실제 경로를 알려줘. 그리고 그 파일 내용을 열어서 한국어로 번역해 보여줘.</p>
+          </div>
+        </div>
+        <div class="box observe">
+          <div class="box-label"><span class="ic">&#128065;</span> 관찰 포인트</div>
+          <p>SKILL.md를 열어 보면 특별한 코드가 아니라, 사람이 읽을 수 있는 설명과 절차가 적힌 문서임을 알 수 있다. Skill이 하는 일은 결국 'Codex가 이 문서를 읽고 그대로 따르는 것'뿐이다.</p>
+        </div>
+      </section>
+
+      <!-- ============ 2장 ============ -->
+      <section class="chapter" id="ch2">
+        <div class="ch-head">
+          <div class="ch-no">CHAPTER 2</div>
+          <h2>2장. 기본 Skill 사용하기</h2>
+          <p>아무것도 설치하지 않아도 쓸 수 있는 Skill</p>
+        </div>
+
+        <div class="box learn">
+          <div class="box-label"><span class="ic">&#127919;</span> 이 장에서 배울 것</div>
+          <ul>
+            <li>Codex에 기본으로 들어있는 Skill</li>
+            <li>Skill을 직접 지명해서 사용하는 법</li>
+            <li>이미지 생성 Skill을 직접 체험하기</li>
+            <li>SKILL.md를 읽고 'Skill = 가이드 문서'임을 이해하기</li>
+          </ul>
+        </div>
+
+        <h3>2.1 기본으로 들어있는 Skill</h3>
+        <p>Codex App은 아무것도 따로 설치하지 않아도 바로 쓸 수 있는 기본 Skill을 갖고 있다. 문서 작성, 표 처리, PDF 다루기, 이미지 생성처럼 자주 쓰는 작업이 미리 준비되어 있다.</p>
+        <div class="box caution">
+          <div class="box-label"><span class="ic">&#9888;</span> 주의</div>
+          <p>기본 Skill의 정확한 이름과 개수는 Codex App 버전에 따라 다를 수 있다.</p>
+        </div>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">지금 내가 따로 설치하지 않아도 바로 쓸 수 있는 기본 Skill에는 어떤 것들이 있어? 각각 한 줄로 설명해줘.</p>
+          </div>
+        </div>
+
+        <h3>2.2 Skill을 직접 지명하기</h3>
+        <p>처음 배울 때는 Codex가 알아서 Skill을 고르기를 기다리기보다, 사용할 Skill 이름을 직접 말하는 편이 좋다. Skill 이름 앞에 $를 붙이거나, 자연어로 Skill 이름을 말하면 된다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">$pdf Skill을 사용해서 이 PDF의 핵심 내용을 요약해줘.</p>
+            <p class="prompt">$xlsx Skill을 사용해서 이 CSV를 표로 정리하고 이상값을 찾아줘.</p>
+          </div>
+        </div>
+
+        <h3>2.3 실습 — 이미지 생성 Skill 써보기</h3>
+        <p>기본 Skill 하나(이미지 생성)를 직접 지명해 결과물을 만들어 본다. 원하는 그림을 글로 자세히 묘사할수록 결과가 좋아진다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 이미지 만들기</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">imagegen skill을 사용해서, 따뜻한 아침 햇살이 들어오는 책상 위에 노트북, 커피잔, 노트가 놓여 있는 사실적인 사진을 만들어줘. 글자나 로고는 넣지 마.</p>
+          </div>
+        </div>
+        <div class="box tip">
+          <div class="box-label"><span class="ic">&#128161;</span> 팁</div>
+          <p>결과가 마음에 들지 않으면 한 가지씩만 바꿔 다시 요청한다. 예: '조금 더 밝게', '위에서 내려다본 각도로', '커피잔을 왼쪽으로'.</p>
+        </div>
+
+        <h3>2.4 실습 — Skill의 SKILL.md 읽어보기</h3>
+        <p>방금 사용한 Skill이 어떻게 만들어져 있는지 들여다본다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">방금 사용한 imagegen Skill의 SKILL.md 파일을 열어서, 어떤 내용이 적혀 있는지 한국어로 번역해 설명해줘.</p>
+          </div>
+        </div>
+        <div class="box key">
+          <div class="box-label"><span class="ic">&#9733;</span> 핵심 문장</div>
+          <p>Skill은 특별한 프로그램이 아니라 '가이드 문서'다. SKILL.md에 적힌 지침을 Codex가 읽고 그대로 따르는 것이다. 이 한 문장이 이번 수업 전체의 핵심이다.</p>
+        </div>
+      </section>
+
+      <!-- ============ 3장 ============ -->
+      <section class="chapter" id="ch3">
+        <div class="ch-head">
+          <div class="ch-no">CHAPTER 3</div>
+          <h2>3장. Skill 설치하기</h2>
+          <p>다른 사람이 만든 Skill을 내 Codex로 가져오기</p>
+        </div>
+
+        <div class="box learn">
+          <div class="box-label"><span class="ic">&#127919;</span> 이 장에서 배울 것</div>
+          <ul>
+            <li>'설치'가 실제로 의미하는 것</li>
+            <li>GitHub에 있는 Skill을 설치하는 흐름</li>
+            <li>설치 후 재시작과 확인</li>
+            <li>설치한 Skill을 실제 작업에 활용하기</li>
+          </ul>
+        </div>
+
+        <h3>3.1 설치란 무엇인가</h3>
+        <p>Skill 설치는 Codex가 읽을 수 있는 위치에 Skill 폴더를 놓는 일이다. 설치된 Skill은 Codex가 다시 시작될 때 목록에 반영된다.</p>
+        <div class="box caution">
+          <div class="box-label"><span class="ic">&#9888;</span> 주의</div>
+          <p>새 Skill을 설치한 뒤에는 Codex App을 재시작해야 한다.</p>
+        </div>
+
+        <h3>3.2 GitHub에서 Skill 설치하기</h3>
+        <p>다른 사람이 만든 Skill은 보통 GitHub에 공개되어 있다. 주소를 채팅창에 붙여 넣고 설치를 요청하면 된다.</p>
+        <ol>
+          <li>웹 브라우저(구글 등)에서 원하는 Skill을 검색한다. 예: 'taste-skill'</li>
+          <li>Skill이 있는 GitHub 저장소 주소를 복사한다.</li>
+          <li>Codex 채팅창에 주소와 함께 설치를 요청한다.</li>
+          <li>Skill 폴더 안에 새 폴더가 생겼는지 확인한다.</li>
+          <li>Codex App을 재시작한다.</li>
+        </ol>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 이렇게 입력</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">https://github.com/Leonxlnx/taste-skill 설치해줘</p>
+          </div>
+        </div>
+        <div class="box check">
+          <div class="box-label"><span class="ic">&#9989;</span> 확인</div>
+          <p>설치가 끝나면 Skill 폴더 안에 taste-skill 폴더가 새로 생긴 것을 확인한다. 그 뒤 Codex App을 재시작해야 새 Skill이 목록에 안정적으로 반영된다.</p>
+        </div>
+
+        <h3>3.3 실습 — 설치한 Skill 활용하기</h3>
+        <p>방금 설치한 taste-skill로 결과물을 만들고, 그 결과를 다른 작업에 이어 붙여 본다. 아래 세 가지를 순서대로 요청한다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 결과 1 — 브랜드 킷</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">taste-skill을 이용해서 애플(Apple) 브랜드 킷을 만들어줘.</p>
+          </div>
+        </div>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 결과 2 — 날씨 대문</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">간단한 대문 페이지를 HTML로 만들어줘. 주제는 '오늘의 날씨'.</p>
+          </div>
+        </div>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 활용 사례 — 둘을 합치기</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">결과2(날씨 대문)에 결과1(애플 브랜드 킷)의 디자인을 적용해줘.</p>
+          </div>
+        </div>
+        <div class="box observe">
+          <div class="box-label"><span class="ic">&#128065;</span> 관찰 포인트</div>
+          <p>하나의 Skill이 만든 결과(브랜드 킷)를 다른 작업(날씨 대문)에 이어 붙였다. Skill의 산출물은 그 자리에서 끝나지 않고 다음 작업의 재료가 된다 — 이것이 5장 '연결'의 출발점이다.</p>
+        </div>
+
+        <h3>3.4 설치 후 확인하기</h3>
+        <ul>
+          <li>Codex App을 재시작했는가?</li>
+          <li>Skill 이름을 직접 말했을 때 Codex가 해당 Skill을 사용한다고 응답하는가?</li>
+        </ul>
+      </section>
+
+      <!-- ============ 4장 ============ -->
+      <section class="chapter" id="ch4">
+        <div class="ch-head">
+          <div class="ch-no">CHAPTER 4</div>
+          <h2>4장. Skill 만들기</h2>
+          <p>내가 반복하는 동작을 Skill로 굳히기</p>
+        </div>
+
+        <div class="box learn">
+          <div class="box-label"><span class="ic">&#127919;</span> 이 장에서 배울 것</div>
+          <ul>
+            <li>어떤 업무를 Skill로 만들면 좋은지 판단하기</li>
+            <li>Skill 폴더 구조 이해하기</li>
+            <li>좋은 description 쓰는 법</li>
+            <li>내 동작을 직접 Skill로 저장해보기</li>
+          </ul>
+        </div>
+
+        <h3>4.1 Skill로 만들 만한 업무 고르기</h3>
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>질문</th><th>Skill로 만들기 좋음</th><th>Skill보다 프롬프트가 나음</th></tr></thead>
+          <tbody>
+            <tr><td>반복성</td><td>비슷한 일을 계속 한다</td><td>한 번만 한다</td></tr>
+            <tr><td>절차성</td><td>항상 따라야 할 순서가 있다</td><td>매번 완전히 다르다</td></tr>
+            <tr><td>자료성</td><td>정책, 양식, 예시, 스키마가 있다</td><td>참고 자료가 거의 없다</td></tr>
+            <tr><td>오류 비용</td><td>빠뜨리면 품질 문제가 생긴다</td><td>틀려도 쉽게 다시 하면 된다</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h3>4.2 Skill 폴더 구조</h3>
+        <div class="code">my-skill/
+├─ SKILL.md      (필수)  Skill 설명과 사용 지침
+├─ scripts/      (선택)  반복 실행 코드
+├─ references/   (선택)  긴 참고문서
+└─ assets/       (선택)  템플릿과 샘플 파일</div>
+        <p>SKILL.md 하나만 있어도 Skill은 작동한다. 나머지 폴더는 필요할 때만 더한다.</p>
+
+        <h3>4.3 좋은 description 쓰기</h3>
+        <p>description은 Codex가 이 Skill을 쓸지 말지 판단하는 가장 중요한 문장이다. '무엇을 하는 Skill인지'와 '언제 사용하는지'가 모두 들어가야 한다.</p>
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>나쁜 description</th><th>문제</th><th>좋은 description</th></tr></thead>
+          <tbody>
+            <tr><td>보고서를 잘 써주는 Skill</td><td>범위가 넓고 입력이 불분명하다</td><td>회사 표준 월간 보고서 초안을 작성·검수할 때 사용. 입력은 KPI 엑셀과 전월 보고서.</td></tr>
+            <tr><td>데이터 분석 Skill</td><td>어떤 데이터인지 모른다</td><td>VOC CSV를 정규화하고 중복 제거·토픽 분류·주간 통계를 만들 때 사용.</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h3>4.4 실습 — Playwright Skill로 나만의 Skill 만들기</h3>
+        <p>Playwright Skill은 평소 마우스로 하던 웹 동작 — 사이트 접속, 페이지 이동, 버튼 클릭 — 을 글로 적어 Codex에게 시킬 수 있게 해준다. 그 동작을 Skill로 저장하면, 다음부터는 한 줄 명령으로 같은 작업을 반복할 수 있다.</p>
+        <p>네이버에 접속해 카페로 이동하는 간단한 동작을, 재사용 가능한 Skill로 만들어 본다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 1단계 — 동작 시켜보기</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">Playwright Skill을 사용해서 네이버(naver.com)에 접속한 다음, 상단 메뉴에서 '카페'로 이동해줘. 어떤 화면이 보이는지 알려줘.</p>
+          </div>
+        </div>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 2단계 — 동작을 Skill로 저장하기</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">방금 한 동작 — 네이버 접속 후 카페로 이동 — 을 '네이버-카페-열기'라는 Skill로 저장해줘.</p>
+          </div>
+        </div>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 3단계 — 만든 Skill 확인하고 다시 써보기</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">방금 만든 '네이버-카페-열기' Skill의 SKILL.md를 열어서 보여줘. 그리고 그 Skill을 사용해서 같은 동작을 다시 한 번 실행해줘.</p>
+          </div>
+        </div>
+        <div class="box key">
+          <div class="box-label"><span class="ic">&#9733;</span> 핵심 문장</div>
+          <p>내가 한 동작이 글(SKILL.md)로 저장되었다. Skill 만들기는 거창한 코딩이 아니라 '내 동작을 글로 받아 적게 하는 일'이다.</p>
+        </div>
+        <div class="box caution">
+          <div class="box-label"><span class="ic">&#9888;</span> 주의</div>
+          <p>웹사이트는 화면 구성이 바뀔 수 있다. 라이브 사이트를 다루는 Skill은 가끔 멈출 수 있으므로, 동작이 단순하고 안정적인 흐름을 고르는 것이 좋다.</p>
+        </div>
+      </section>
+
+      <!-- ============ 5장 ============ -->
+      <section class="chapter" id="ch5">
+        <div class="ch-head">
+          <div class="ch-no">CHAPTER 5</div>
+          <h2>5장. Skill 연결하기</h2>
+          <p>여러 단계를 하나의 작업 흐름으로 잇기</p>
+        </div>
+
+        <div class="box learn">
+          <div class="box-label"><span class="ic">&#127919;</span> 이 장에서 배울 것</div>
+          <ul>
+            <li>단계를 따로 시키는 것과 한 번에 잇는 것의 차이</li>
+            <li>큰 일을 작은 단계로 나누는 법</li>
+            <li>앞 단계의 결과를 다음 단계의 재료로 잇는 법</li>
+            <li>여러 단계를 한 번의 요청으로 묶는 문장 쓰기</li>
+          </ul>
+        </div>
+
+        <h3>5.1 '연결'이란 무엇인가</h3>
+        <p>지금까지는 Skill을 하나씩 따로 썼다. 문서 요약 따로, 이미지 생성 따로. '연결'은 여러 단계를 하나의 작업 흐름으로 잇는 것이다 — 앞 단계의 결과가 다음 단계의 재료가 되도록.</p>
+        <p>같은 일을 두 가지 방식으로 시켜 보면 차이가 분명하다.</p>
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>방식</th><th>어떻게 진행되는가</th></tr></thead>
+          <tbody>
+            <tr><td>연결하지 않음</td><td>'데이터 모아줘' → (결과 확인) → '분석해줘' → (결과 확인) → '보고서로 만들어줘'. 매 단계마다 사람이 끼어들어 다음을 시킨다.</td></tr>
+            <tr><td>연결함</td><td>'데이터를 모아서, 분석하고, 보고서로 만들어줘.' 한 번의 요청으로 단계가 이어진다.</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="box key">
+          <div class="box-label"><span class="ic">&#9733;</span> 핵심 문장</div>
+          <p>연결은 '여러 번 나눠 시킬 일을 한 번에 시키는 것'이다. 이것만으로도 손이 크게 준다. 다만 연결은 아직 '사람이 직접 요청'한다. 사람 없이 스스로 도는 '자동화'는 6장에서 한 걸음 더 나아가 만든다.</p>
+        </div>
+
+        <h3>5.2 단계를 잘 나누는 법</h3>
+        <p>여러 단계를 매끄럽게 이으려면, 각 단계가 무엇을 받고 무엇을 내놓는지 분명해야 한다. 한 단계의 출력이 다음 단계의 입력과 맞아야 흐름이 끊기지 않는다.</p>
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>질문</th><th>좋은 답의 예</th></tr></thead>
+          <tbody>
+            <tr><td>이 단계는 무엇을 입력으로 받는가?</td><td>CSV 원본, DOCX 초안, 폴더 경로처럼 구체적으로 쓴다</td></tr>
+            <tr><td>이 단계는 무엇을 출력하는가?</td><td>정규화 CSV, 요약표, 보고서 초안처럼 다음 단계가 받을 수 있게 쓴다</td></tr>
+            <tr><td>이 단계의 책임은 어디까지인가?</td><td>수집 단계는 수집만, 분석 단계는 분석만 하도록 나눈다</td></tr>
+            <tr><td>완료를 어떻게 확인하는가?</td><td>행 수, 누락 항목, 형식처럼 확인 기준을 둔다</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h3>5.3 여러 단계를 한 번에 요청하기</h3>
+        <p>단계를 다 나눴으면 하나의 요청문으로 묶는다. 각 단계에 어울리는 Skill이 떠오르면 그 이름을 함께 지명하고, 떠오르지 않으면 Codex가 고르게 둔다. 어느 쪽이든 사람이 분명히 해야 할 것은 '단계'와 '단계 사이의 연결'이다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">아래 업무를 여러 단계를 잇는 하나의 흐름으로 처리해줘.
+목표: &lt;최종 목표&gt;
+입력: &lt;파일 / 폴더 / 데이터&gt;
+단계: 1) &lt;첫 단계&gt; 2) &lt;둘째 단계&gt; 3) &lt;셋째 단계&gt;
+각 단계의 결과를 다음 단계의 재료로 이어서 진행하고, 단계마다 무엇을 만들었는지 짧게 알려줘.</p>
+          </div>
+        </div>
+
+        <h3>5.4 실습 — 세 단계를 하나의 작업 흐름으로 잇기</h3>
+        <p>5.1~5.3에서 본 대로, 연결되는 것은 '단계'다. 큰 일을 단계로 쪼개고, 각 단계가 알맞은 Skill을 도구로 쓰게 한다. 이번 실습은 세 단계짜리 작은 작업 흐름을 직접 짜서 한 번에 돌려 본다.</p>
+        <p><strong>만들 것 —</strong> 사내 'AI 스터디 모임' 모집 안내문 한 장. 흐름은 아래처럼 짠다.</p>
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>단계</th><th>하는 일 (쓰는 Skill)</th><th>받는 것</th><th>내놓는 것</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>색·폰트·톤 정하기 — taste-skill</td><td>안내문 주제</td><td>브랜드 킷</td></tr>
+            <tr><td>2</td><td>헤더 이미지 만들기 — imagegen</td><td>1단계의 톤·분위기</td><td>헤더 이미지</td></tr>
+            <tr><td>3</td><td>디자인·이미지·문구 합쳐 문서로 — docx</td><td>1·2단계 결과 + 안내 문구</td><td>안내문 Word</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p>2단계는 1단계가 끝나야, 3단계는 1·2단계가 끝나야 시작된다. 단계가 이렇게 이어지는 것이 '흐름'이다. 각 단계 옆의 Skill은 그 단계가 집어 쓰는 도구일 뿐, 서로 연결된 것이 아니다.</p>
+        <p>흐름을 다 짰으면 단계 순서대로 한 번에 요청한다. 각 단계에 어울리는 Skill을 함께 지명하면, 어떤 Skill이 무슨 일을 했는지 눈으로 확인할 수 있다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 작업 흐름 실행</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">사내 'AI 스터디 모임' 모집 안내문 한 장을 만들고 싶어. 아래 세 단계를 하나의 흐름으로 이어서 진행해줘.
+① taste-skill로 'AI 스터디 모임' 안내문에 어울리는 색·폰트·톤을 정해줘 →
+② imagegen으로 ①에서 정한 톤에 맞는 헤더 이미지를 만들어줘 — 차분한 스터디 분위기, 글자는 넣지 마 →
+③ docx Skill로 ①의 색·폰트와 ②의 이미지를 적용해, 모임 이름·매주 수요일 저녁 7시·신청 방법(사내 메일)을 담은 A4 한 장 안내문을 만들어줘.
+각 단계의 결과를 다음 단계의 재료로 넘기고, 단계마다 어떤 Skill을 썼는지 알려줘.</p>
+          </div>
+        </div>
+        <div class="box observe">
+          <div class="box-label"><span class="ic">&#128065;</span> 관찰 포인트</div>
+          <p>세 단계가 차례로 손을 거쳤다 — 1단계가 정한 색·폰트가 3단계 문서에 입혀지고, 2단계가 만든 이미지가 3단계 문서에 박혔다. 우리가 이은 것은 '단계'다. taste-skill·imagegen·docx는 각 단계가 필요해서 집어 든 도구일 뿐, 서로 연결된 것이 아니다. 한 단계의 결과물이 다음 단계의 재료가 되는 것 — 이것이 5장이 말하는 '연결'이고 '흐름'이다.</p>
+        </div>
+        <div class="box sample">
+          <div class="box-label"><span class="ic">&#128196;</span> 예시 산출물</div>
+          <p>이 실습으로 만들어지는 결과물의 예시입니다. 링크를 누르면 다운로드 없이 바로 볼 수 있습니다.</p>
+          <div class="sample-links">
+            <a class="sample-link" href="samples/study-group-notice.pdf" target="_blank" rel="noopener">
+              <span class="pdf-ic">PDF</span>
+              <span>AI 스터디 모임 모집 안내문<span class="sl-sub"> · A4 1장</span></span>
+              <span class="sl-go" aria-hidden="true">&#8599;</span>
+            </a>
+          </div>
+        </div>
+        <div class="box next">
+          <div class="box-label"><span class="ic">&#10142;</span> 다음 장과의 연결</div>
+          <p>다음 6장에서는 이 '연결'을 실제 데이터로 해본다. 그리고 한 걸음 더 나아가, 사람이 매번 시키지 않아도 스스로 도는 '자동화'까지 만든다.</p>
+        </div>
+      </section>
+
+      <!-- ============ 6장 ============ -->
+      <section class="chapter" id="ch6">
+        <div class="ch-head">
+          <div class="ch-no">CHAPTER 6</div>
+          <h2>6장. 심화 실습</h2>
+          <p>데이터 수집부터 자동화까지, 끝까지 직접 해보기</p>
+        </div>
+
+        <div class="box learn">
+          <div class="box-label"><span class="ic">&#127919;</span> 이 장에서 배울 것</div>
+          <ul>
+            <li>수집 → 분석 → 시각화 → 보고서로 이어지는 작업 흐름</li>
+            <li>반복하는 수집 동작을 하나의 Skill로 저장하기</li>
+            <li>깊이 있는 분석을 끌어내는 요청법</li>
+            <li>묶기·굳히기·예약 — 사람 없이 도는 자동화 만들기</li>
+          </ul>
+        </div>
+
+        <h3>6.1 전체 흐름 한눈에 보기</h3>
+        <p>이번 실습은 'AI 모델 동향'을 주제로, 공개된 세 개의 웹 데이터를 가지고 아래 흐름을 처음부터 끝까지 따라간다. 1~5장에서 배운 Skill 사용·설치·만들기·연결이 여기서 하나로 합쳐진다.</p>
+        <div class="flow">
+          <div class="step">① 데이터 수집</div><div class="arrow">→</div>
+          <div class="step">② 데이터 분석</div><div class="arrow">→</div>
+          <div class="step">③ 데이터 시각화</div><div class="arrow">→</div>
+          <div class="step">④ 보고서 작성</div><div class="arrow">→</div>
+          <div class="step">⑤ 자동화</div>
+        </div>
+
+        <h3>6.2 1단계 — 데이터 수집</h3>
+        <p>세 개의 웹사이트에서 데이터를 가져온다. 다운로드 버튼이 없는 사이트는 화면을 읽어 엑셀로 저장하고, 파일이 있는 사이트는 그대로 내려받는다.</p>
+        <p><strong>왜 세 곳에서 모으는가.</strong> 세 사이트는 모두 'AI 모델'을 다루지만, 알려주는 데이터의 성격이 서로 다르다. 하나만 봐서는 한쪽 면만 보이고, 셋을 합쳐야 비로소 입체적인 그림이 나온다.</p>
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>사이트</th><th>데이터의 성격</th><th>답하는 질문</th><th>수집 방식</th></tr></thead>
+          <tbody>
+            <tr><td>Ollama Library</td><td>채택·인기 — 모델 다운로드 수</td><td>지금 무엇이 실제로 쓰이는가</td><td>화면을 읽어 엑셀로</td></tr>
+            <tr><td>Arena.ai Leaderboard</td><td>성능·품질 — 사용자 투표 순위</td><td>무엇이 가장 우수한가</td><td>탭·클릭이 필요</td></tr>
+            <tr><td>Epoch AI Notable Models</td><td>규모·역사 — 1950~2026 추세</td><td>생태계가 어디로 가는가</td><td>다운로드 버튼·CSV</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="box info">
+          <div class="box-label"><span class="ic">&#128279;</span> 세 사이트를 함께 쓰는 이유</div>
+          <p>하나는 '인기', 하나는 '성능', 하나는 '규모와 추세'를 알려준다 — 측정하는 대상이 서로 다르다.</p>
+          <p>따로 보면 단편이지만, 합치면 한 사이트로는 보이지 않던 사실이 드러난다. 예컨대 '가장 인기 있는 모델'과 '가장 성능 좋은 모델'이 다르다는 사실은 두 사이트를 겹쳐 봐야 보인다.</p>
+          <p>수집 난이도도 일부러 다르게 골랐다 — 단순한 화면 읽기, 클릭이 필요한 경우, 파일 다운로드. 한 번의 실습으로 세 가지 수집 상황을 모두 경험한다.</p>
+        </div>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 프롬프트 1</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">https://ollama.com/library 데이터를 백그라운드에서 수집하고, 결과만 엑셀로 저장해줘.</p>
+          </div>
+        </div>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 프롬프트 2</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">https://arena.ai/leaderboard 데이터를 백그라운드에서 수집하고, 결과만 엑셀로 저장해줘.</p>
+          </div>
+        </div>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 프롬프트 3</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">https://epoch.ai/data/notable_ai_models.csv 를 다운로드해줘.</p>
+          </div>
+        </div>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 세 작업을 Skill로 저장</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">방금 한 세 가지 수집 작업을 'ai-data-downloader'라는 Skill로 저장해줘.</p>
+          </div>
+        </div>
+        <div class="box observe">
+          <div class="box-label"><span class="ic">&#128065;</span> 관찰 포인트</div>
+          <p>세 번 반복한 수집 작업을 하나의 Skill로 묶었다. 다음부터는 'ai-data-downloader Skill로 데이터 받아줘' 한 줄이면 된다 — 4장에서 배운 'Skill 만들기'의 실제 적용이다.</p>
+        </div>
+
+        <h3>6.3 2단계 — 데이터 분석</h3>
+        <p>모은 데이터를 그냥 쌓아두지 말고 의미를 끌어낸다. 분석을 요청할 때는 '무엇을'을 넘어 '그래서 무엇을 알 수 있는지'까지 조건으로 명시한다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 분석 요청</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">이 자료로 사용자가 얻을 수 있는 AI 동향과 인사이트를 분석 보고서 형태로 만들어줘. 더 깊은 분석을 위해 다음을 지켜줘.
+1) 세 데이터를 서로 연결지어 발견할 수 있는 것을 3가지 제안해줘. (예: 'Ollama 인기 모델이 Arena에서도 상위인가' 같은 교차 분석)
+2) 각 데이터에서 통계적으로 튀는 값(이상치, 변곡점, 패턴 변화)을 찾아줘.
+3) 초보자도 이해할 수 있도록 쉽게 설명하고 인사이트를 제공해줘.
+4) 단순 통계 나열에 그치지 말고, '그래서 뭐?'에 답하는 내용이 반드시 있어야 해.</p>
+          </div>
+        </div>
+        <div class="box tip">
+          <div class="box-label"><span class="ic">&#128161;</span> 팁</div>
+          <p>분석 결과의 깊이는 '요구 조건'에서 갈린다. 위 1~4번처럼 조건을 분명히 적으면, 같은 데이터라도 훨씬 깊은 결과가 나온다.</p>
+        </div>
+
+        <h3>6.4 3단계 — 데이터 시각화</h3>
+        <p>숫자는 그림으로 바꿀 때 비로소 한눈에 들어온다. 같은 데이터를 두 가지 방식으로 시각화해 보고, 산출물 형태의 차이를 느껴 본다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 시각화 1 — 단일 HTML</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">이제 시각화를 해서 HTML 대시보드를 만들어줘.</p>
+          </div>
+        </div>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 시각화 2 — 프레임워크 프로젝트</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">같은 내용을 Vite + React + Tailwind로도 만들어줘.</p>
+          </div>
+        </div>
+        <div class="box observe">
+          <div class="box-label"><span class="ic">&#128065;</span> 관찰 포인트</div>
+          <p>같은 데이터라도 산출물의 형태는 목적에 따라 다르다. 한 번 보고 끝낼 것인지(단일 HTML), 계속 발전시킬 것인지(프레임워크 프로젝트)에 따라 고른다.</p>
+        </div>
+
+        <h3>6.5 4단계 — 보고서 작성</h3>
+        <p>분석과 시각화 결과를 사람이 읽는 문서로 정리한다. 보고서는 의사결정자가 읽는 산출물이므로, 형식과 구성을 함께 지정해 요청한다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 보고서 요청</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">앞의 분석과 시각화 결과를 바탕으로 'AI 모델 동향 분석 보고서'를 Word 문서로 만들어줘. 핵심 요약 → 데이터별 분석 → 통합 인사이트 → 시사점 → 데이터 한계 → 출처 순으로 구성하고, 주요 차트를 본문에 넣어줘.</p>
+          </div>
+        </div>
+        <div class="box tip">
+          <div class="box-label"><span class="ic">&#128161;</span> 팁</div>
+          <p>보고서 요청에는 네 가지를 함께 적으면 결과가 안정적이다. (1) 문서 형식(Word/PDF) (2) 목차 구성 (3) 차트 포함 여부 (4) 읽는 사람.</p>
+        </div>
+        <div class="box sample">
+          <div class="box-label"><span class="ic">&#128196;</span> 예시 산출물</div>
+          <p>같은 과제를 서로 다른 도구로 만든 'AI 동향 분석 보고서' 예시입니다. 링크를 누르면 다운로드 없이 바로 볼 수 있습니다.</p>
+          <div class="sample-links">
+            <a class="sample-link" href="samples/ai-trend-report-claude.pdf" target="_blank" rel="noopener">
+              <span class="pdf-ic">PDF</span>
+              <span>AI 동향 분석 보고서 — Claude<span class="sl-sub"> · 17쪽</span></span>
+              <span class="sl-go" aria-hidden="true">&#8599;</span>
+            </a>
+            <a class="sample-link" href="samples/ai-trend-report-claude-cowork.pdf" target="_blank" rel="noopener">
+              <span class="pdf-ic">PDF</span>
+              <span>AI 동향 분석 보고서 — Claude Cowork<span class="sl-sub"> · 7쪽</span></span>
+              <span class="sl-go" aria-hidden="true">&#8599;</span>
+            </a>
+            <a class="sample-link" href="samples/ai-trend-report-codex-app.pdf" target="_blank" rel="noopener">
+              <span class="pdf-ic">PDF</span>
+              <span>AI 동향 분석 보고서 — Codex App<span class="sl-sub"> · 7쪽</span></span>
+              <span class="sl-go" aria-hidden="true">&#8599;</span>
+            </a>
+          </div>
+        </div>
+
+        <h3>6.6 5단계 — 자동화: 사람 없이 도는 흐름 만들기</h3>
+        <p>6.2~6.5에서 수집·분석·시각화·보고서를 하나씩 해봤다. 자동화는 이 네 단계를 사람 손에서 떼어내는 일이다. 한 번에 되는 것이 아니라, 세 걸음을 차례로 거친다.</p>
+        <div class="flow">
+          <div class="step">① 묶기 — 한 번에 잇기</div><div class="arrow">→</div>
+          <div class="step">② 굳히기 — Skill로 저장</div><div class="arrow">→</div>
+          <div class="step">③ 예약 — 정해진 때 스스로 실행</div>
+        </div>
+
+        <h4>1걸음 · 묶기 — 네 단계를 한 번의 요청으로</h4>
+        <p>6.2~6.5는 한 채팅에서 이어가며 한 단계씩 해봤다. 이번엔 그 네 단계를 한 번의 요청으로 잇는다. 새 채팅창을 열어 아래처럼 입력해도 되는데, 한 가지 요령이 있다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 묶기</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">AI 모델 동향을 정리하고 싶어. 아래 네 단계를 하나의 흐름으로 이어서 진행해줘.
+① 앞서 만든 'ai-data-downloader' Skill로 세 사이트 데이터를 수집하고 →
+② 교차 분석해 인사이트를 뽑고 → ③ 차트로 시각화하고 →
+④ Word 보고서로 정리해줘.
+각 단계의 결과를 다음 단계의 재료로 넘겨줘.
+보고서의 분석 제목, 섹션 제목, 결론, '그래서 뭐?'는 하드코딩하지 말고 매 실행의 데이터와 이전 실행 비교 결과로 새로 작성해줘.
+레이아웃은 재사용해도 되지만, 인사이트 문장은 재사용하지 마. 변화가 작아도 지표별 변화표를 포함해줘.</p>
+          </div>
+        </div>
+        <div class="box info">
+          <div class="box-label"><span class="ic">&#128279;</span> 왜 Skill 이름을 콕 집어 불렀나</div>
+          <p>새 채팅창에는 앞 대화 내용이 남아 있지 않다. 그냥 '세 사이트에서 수집해줘'라고만 하면 Codex는 어느 사이트인지 알 수 없다.</p>
+          <p>하지만 Skill은 채팅창이 바뀌어도 남는다. 6.2에서 저장해 둔 'ai-data-downloader' Skill을 이름으로 부르면, 새 채팅에서도 세 사이트를 정확히 안다.</p>
+          <p>1장에서 배운 '프롬프트는 대화가 끝나면 사라지고, Skill은 남는다'가 바로 이 장면이다.</p>
+        </div>
+        <div class="box tip">
+          <div class="box-label"><span class="ic">&#128161;</span> 팁</div>
+          <p>묶을 때 두 가지 옵션을 더할 수 있다. 분기 — '어제와 비교해 1위가 바뀐 부문이 있을 때만 보고서에 주요 변동 섹션을 넣어줘'처럼 조건에 따라 다르게. 병렬 — '세 사이트 수집을 동시에 진행해줘'처럼 여러 일을 한꺼번에. 둘 다 묶음을 더 똑똑하게·빠르게 만드는 선택지일 뿐, 그 자체가 자동화는 아니다.</p>
+        </div>
+
+        <h4>2걸음 · 굳히기 — 그 흐름을 Skill로 저장</h4>
+        <p>6.2에서 수집 세 동작을 'ai-data-downloader' Skill로 저장했다. 이번엔 방금 묶은 전체 흐름(수집→분석→시각화→보고서)을 하나의 Skill로 저장한다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 굳히기</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">방금 진행한 전체 흐름을 'ai-동향-리포트'라는 Skill로 저장해줘. Skill에는 보고서 템플릿만 재사용하고, 분석 질문·인사이트·결론은 매 실행마다 수집 데이터에서 새로 만들도록 구성해줘.</p>
+          </div>
+        </div>
+        <div class="box observe">
+          <div class="box-label"><span class="ic">&#128065;</span> 관찰 포인트</div>
+          <p>이제 그 긴 흐름이 한 줄 명령이 됐다. "ai-동향-리포트 Skill 실행해줘" 한 줄이면 네 단계가 다 돈다. 하지만 아직은 '내가' 그 한 줄을 직접 쳐야 한다 — 마지막 걸음이 남았다.</p>
+        </div>
+
+        <h4>3걸음 · 예약 — 사람 없이 정해진 때 스스로 실행</h4>
+        <p>마지막 걸음. 굳혀 둔 Skill을 '정해진 때에 사람 없이' 실행되게 예약한다. 이 걸음을 거쳐야 비로소 내가 채팅창을 열지 않아도 일이 끝나 있다.</p>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기 · 예약</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">'ai-동향-리포트' Skill을 매주 월요일 오전 9시에 자동으로 실행하고, 완성된 보고서를 나에게 알려줘. 지난주와 비교해 큰 변화가 있을 때만 알림을 보내줘.</p>
+          </div>
+        </div>
+        <div class="box caution">
+          <div class="box-label"><span class="ic">&#9888;</span> 주의</div>
+          <p>예약 실행(스케줄) 기능의 정확한 이름과 사용법은 Codex App 버전에 따라 다를 수 있다.</p>
+        </div>
+        <div class="box key">
+          <div class="box-label"><span class="ic">&#9733;</span> 핵심 문장</div>
+          <p>자동화의 핵심은 '분기'나 '병렬'이 아니라 '사람이 빠지는 것'이다. 묶기는 손을 덜고, 굳히기는 한 줄로 줄이고, 예약은 손을 아예 뗀다. 세 걸음을 다 거쳐야 '자동화했다'고 말할 수 있다.</p>
+        </div>
+      </section>
+
+      <!-- ============ 7장 ============ -->
+      <section class="chapter" id="ch7">
+        <div class="ch-head">
+          <div class="ch-no">CHAPTER 7</div>
+          <h2>7장. Skill을 독립 앱으로</h2>
+          <p>바이브 코딩으로 Codex App 밖에서도 도는 앱 만들기</p>
+        </div>
+
+        <div class="box learn">
+          <div class="box-label"><span class="ic">&#127919;</span> 이 장에서 배울 것</div>
+          <ul>
+            <li>프롬프트 → Skill → 독립 앱으로 이어지는 사다리</li>
+            <li>바이브 코딩 — 코드는 Codex가 쓰고, 사람은 무엇을 만들지만 말한다</li>
+            <li>독립을 얻을 때 무엇을 내주는가 (트레이드오프)</li>
+          </ul>
+        </div>
+
+        <h3>7.1 Skill에서 독립 앱으로</h3>
+        <p>6장에서 만든 'ai-동향-리포트' Skill은 강력하지만 두 가지에 묶여 있다 — Codex App이 있어야 돌고, 분석할 때마다 클라우드 AI를 부른다. 한 걸음 더 나아가면, 그 일을 어디에도 기대지 않는 독립 앱으로 만들 수 있다.</p>
+        <div class="flow">
+          <div class="step">프롬프트<br><span style="font-weight:500;font-size:12.5px;">그때만</span></div><div class="arrow">→</div>
+          <div class="step">Skill<br><span style="font-weight:500;font-size:12.5px;">반복 가능, 단 Codex App 안</span></div><div class="arrow">→</div>
+          <div class="step">독립 앱<br><span style="font-weight:500;font-size:12.5px;">Codex App도 클라우드도 없이 혼자</span></div>
+        </div>
+        <p>코드는 Codex가 쓰고, 사람은 무엇을 만들지만 말한다 — 이것이 '바이브 코딩'이다. 방법은 지금까지와 똑같다. 한국어로 부탁하면 된다.</p>
+
+        <h3>7.2 실습 — Skill을 독립 앱으로 만들기</h3>
+        <div class="try">
+          <div class="try-head">
+            <span class="t-label"><span>&#9000;</span> 따라 입력해보기</span>
+            <button class="copy-btn">복사</button>
+          </div>
+          <div class="try-body">
+            <p class="prompt">'ai-동향-리포트' Skill을 확인하고, 같은 일을 하는 독립 앱으로 만들어줘. Codex App과 클라우드 AI 없이 — 내 컴퓨터에서 Python과 Ollama(로컬 AI 모델)만으로 — 돌아가게 구현해줘.</p>
+          </div>
+        </div>
+        <p>이 한 줄이면 Codex가 수 분 안에 앱을 만든다 — 데이터 수집·분석·차트·보고서를 Python으로 다시 짜고, 분석에 로컬 모델을 쓰도록 연결해서. 강사가 강의 중에 라이브로 시켜 보여줘도 좋다.</p>
+        <p><strong>다만 독립은 공짜가 아니다.</strong> Codex App Skill과 독립 앱은 이렇게 갈린다.</p>
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>항목</th><th>Codex App Skill (6장)</th><th>독립 앱 (7장)</th></tr></thead>
+          <tbody>
+            <tr><td>AI 모델</td><td>클라우드 프런티어 모델</td><td>내 PC의 로컬 모델 (Ollama)</td></tr>
+            <tr><td>분석 품질</td><td>높다</td><td>낮아진다</td></tr>
+            <tr><td>필요한 것</td><td>Codex App</td><td>Python·Ollama 설치</td></tr>
+            <tr><td>Ollama 없이 돌리면</td><td>—</td><td>AI 분석이 빠지고 규칙 기반으로 대체</td></tr>
+            <tr><td>독립성</td><td>Codex App·인터넷·계정 필요</td><td>인터넷·계정·비용 없이 혼자 돎</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="box caution">
+          <div class="box-label"><span class="ic">&#9888;</span> 주의</div>
+          <p>독립 앱을 실제로 돌리려면 Python과 Ollama를 설치해야 한다. 코드 경험이 없으면 이 설치가 문턱이 될 수 있다. 강의에서는 강사 시연으로 보고, 관심 있는 분이 각자 해보는 것을 권한다.</p>
+        </div>
+        <div class="box key">
+          <div class="box-label"><span class="ic">&#9733;</span> 핵심 문장</div>
+          <p>독립을 얻는 대신 성능을 내준다 — 공짜가 아니다. 흥미롭게도 이것은 6장에서 데이터로 본 그대로다. 로컬 오픈 모델은 클라우드 프런티어 모델을 아직 따라잡지 못한다. 7장의 앱을 직접 돌려 보면, 그 격차를 글이 아니라 결과물로 체감하게 된다.</p>
+        </div>
+
+        <div class="box closing">
+          <div class="box-label"><span class="ic">&#127881;</span> 수업을 마치며</div>
+          <p>오늘 배운 것은 Codex 사용법이 아니라 'AI에게 무엇을, 어떻게 부탁할 것인가'다.</p>
+          <p>다음 주 출근하면, 매주 반복하는 작업 3개를 적어 보자. 그중 하나를 Skill로 만들어 보는 것 — 그것이 진짜 시작이다.</p>
+        </div>
+
+      </section>
+
+      <div class="footer">
+        Codex App 스킬 실습 매뉴얼 · 2026년 5월 21일 · 케빈
+      </div>
+
+    </div><!-- /inner -->
+  </main>
+</div><!-- /layout -->
+
+<button id="top" aria-label="맨 위로">&#8593;</button>
+
+<script>
+(function(){
+  var chapters=[
+    ["ch1","1","Skill 이해하기"],
+    ["ch2","2","기본 Skill 사용하기"],
+    ["ch3","3","Skill 설치하기"],
+    ["ch4","4","Skill 만들기"],
+    ["ch5","5","Skill 연결하기"],
+    ["ch6","6","심화 실습"],
+    ["ch7","7","Skill을 독립 앱으로"]
+  ];
+  var toc=document.getElementById('toc');
+  var mtoc=document.getElementById('mobileToc');
+  var mlist=document.createElement('ul');
+  chapters.forEach(function(c){
+    var li=document.createElement('li');
+    li.innerHTML='<a href="#'+c[0]+'"><span class="n">'+c[1]+'</span>'+c[2]+'</a>';
+    toc.appendChild(li);
+    var mli=document.createElement('li');
+    mli.innerHTML='<a href="#'+c[0]+'"><span class="n">'+c[1]+'장</span>'+c[2]+'</a>';
+    mlist.appendChild(mli);
+  });
+  mtoc.appendChild(mlist);
+
+  document.querySelectorAll('.try').forEach(function(box){
+    var btn=box.querySelector('.copy-btn');
+    if(!btn) return;
+    btn.addEventListener('click',function(){
+      var txt=Array.prototype.map.call(box.querySelectorAll('.prompt'),
+        function(p){return p.innerText;}).join('\n\n');
+      navigator.clipboard.writeText(txt).then(function(){
+        btn.textContent='복사됨';btn.classList.add('done');
+        setTimeout(function(){btn.textContent='복사';btn.classList.remove('done');},1600);
+      }).catch(function(){
+        btn.textContent='실패';
+        setTimeout(function(){btn.textContent='복사';},1600);
+      });
+    });
+  });
+
+  var menuBtn=document.getElementById('menuBtn');
+  menuBtn.addEventListener('click',function(){
+    mtoc.classList.toggle('open');
+    menuBtn.textContent=mtoc.classList.contains('open')?'목차 ▴':'목차 ▾';
+  });
+  mtoc.addEventListener('click',function(e){
+    if(e.target.closest('a')){mtoc.classList.remove('open');menuBtn.textContent='목차 ▾';}
+  });
+
+  var top=document.getElementById('top');
+  top.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  var brand=document.getElementById('brandLink');
+  if(brand){brand.addEventListener('click',function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});}
+  window.addEventListener('scroll',function(){
+    top.classList.toggle('show',window.scrollY>500);
+  });
+
+  var links=Array.prototype.slice.call(toc.querySelectorAll('a'));
+  var secs=chapters.map(function(c){return document.getElementById(c[0]);});
+  window.addEventListener('scroll',function(){
+    var y=window.scrollY+140,idx=0;
+    secs.forEach(function(s,i){if(s.offsetTop<=y)idx=i;});
+    links.forEach(function(l,i){l.classList.toggle('active',i===idx);});
+  });
+})();
+</script>
+
+</body>
+</html>
